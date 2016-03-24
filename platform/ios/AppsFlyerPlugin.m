@@ -5,7 +5,7 @@
 
 - (CDVPlugin *)initWithWebView:(UIWebView *)theWebView
 {
-    [self pluginInitialize];
+    self = (AppsFlyerPlugin *)[super initWithWebView:theWebView];
     return self;
 }
 
@@ -16,15 +16,18 @@
     }
     
     NSString* devKey = [command.arguments objectAtIndex:0];
-    NSString* appId = [command.arguments objectAtIndex:1];    
+    NSString* appId = [command.arguments objectAtIndex:1];
+    
     
     [AppsFlyerTracker sharedTracker].appleAppID = appId;
     [AppsFlyerTracker sharedTracker].appsFlyerDevKey = devKey;
-    [AppsFlyerTracker sharedTracker].delegate = self;
-    [AppsFlyerTracker sharedTracker].isDebug = YES;
     [[AppsFlyerTracker sharedTracker] trackAppLaunch];
-    
-  }
+    [self performSelector:@selector(initDelegate) withObject:nil afterDelay:7];
+}
+
+- (void) initDelegate{
+    [AppsFlyerTracker sharedTracker].delegate = self;
+}
 
 - (void)setCurrencyCode:(CDVInvokedUrlCommand*)command
 {
@@ -74,10 +77,7 @@
                                             error:&error];
     if (jsonData) {
         NSString *JSONString = [[NSString alloc] initWithBytes:[jsonData bytes] length:[jsonData length] encoding:NSUTF8StringEncoding];
-        [[super webViewEngine] evaluateJavaScript:[NSString stringWithFormat:@"javascript:window.plugins.appsFlyer.onInstallConversionDataLoaded(%@)", JSONString] completionHandler:nil];
-        
-        NSLog(@"JSONString = %@",JSONString);
-
+        [[super webView] stringByEvaluatingJavaScriptFromString: [NSString stringWithFormat:@"javascript:window.plugins.appsFlyer.onInstallConversionDataLoaded(%@)", JSONString]];
     } else {
         NSLog(@"%@",error);
     }
@@ -96,5 +96,6 @@
     [[AppsFlyerTracker sharedTracker] trackEvent:eventName withValues:eventValues];
 
 }
+
 
 @end
