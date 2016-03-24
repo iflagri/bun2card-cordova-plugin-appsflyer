@@ -54,8 +54,7 @@
             </receiver>
         </config-file>
 
-        <framework src="com.google.android.gms:play-services:7.3.0+" />
-        <framework src="com.android.support:appcompat-v7:22.2.1" />
+        <dependency id="cordova-plugin-googleplayservices" />
         <source-file src="platform/android/com/appsflyer/cordova/plugin/AppsFlyerPlugin.java" target-dir="src/com/appsflyer/cordova/plugin" />
         <source-file src="platform/android/libs/AF-Android-SDK-v3.3.0.jar" target-dir="libs"/>
 
