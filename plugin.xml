@@ -56,7 +56,8 @@
 
         <source-file src="platform/android/com/appsflyer/cordova/plugin/AppsFlyerPlugin.java" target-dir="src/com/appsflyer/cordova/plugin" />
         <source-file src="platform/android/libs/AF-Android-SDK-v3.3.0.jar" target-dir="libs"/>
-
+        <framework src="com.google.android.gms:play-services-vision:+" />
+        <framework src="com.google.android.gms:play-services-ads:+" />
     </platform>
 
     <!-- ios -->
